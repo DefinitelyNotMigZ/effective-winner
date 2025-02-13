@@ -1,9 +1,0 @@
-echo "*.pyc
-__pycache__/
-db.sqlite3
-.env
-venv/
-.vscode/
-.idea/
-media/
-staticfiles/" > .gitignore
