@@ -1,7 +1,7 @@
 services:
 #containers na gagamitin sa docker
   web: #unique identifier ng container
-    container_name: sample_store_db #name ng container
+    container_name: shoes_db #name ng container
     build: 
       context: ./storemanagement #kung san siya mag sisimula mag build
       dockerfile: Dockerfile 
@@ -21,7 +21,7 @@ services:
     
 
   postgres:
-    container_name: store_db
+    container_name: shoe_db
     image: postgres
     env_file:
       - ./storemanagement/.env
