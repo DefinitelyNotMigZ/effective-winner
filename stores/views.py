@@ -7,16 +7,6 @@ from .models import Users,Stores
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import StoreSerializer, UserSerializer, CustomTokenObtainPairSerializer
 
-
-# class LoginAPIView(APIView):
-#     serializer_class =
-#     permission_classes = []
-
-#     def post(self, request):
-#         pass
-#     def get(self, request):
-#         pass
-
 class UsersViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Users.objects.all()
