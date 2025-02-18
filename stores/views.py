@@ -50,13 +50,65 @@ class UsersViewSet(viewsets.ModelViewSet):
 
 class StoresViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = Stores.objects.all()
     serializer_class = StoreSerializer
+
+    def get_queryset(self):
+        # Return only stores created by the current user
+        return Stores.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # Automatically set the user when creating a store
+        serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Check if the user is the owner of the store
+        if instance.user != request.user:
+            return Response(
+                {"detail": "You do not have permission to update this store."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Check if the user is the owner of the store
+        if instance.user != request.user:
+            return Response(
+                {"detail": "You do not have permission to update this store."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().partial_update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        # Check if the user is the owner of the store
+        if instance.user != request.user:
+            return Response(
+                {"detail": "You do not have permission to delete this store."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().destroy(request, *args, **kwargs)
+
+    @action(detail=True, methods=['delete'])
+    def delete_store(self, request, pk=None):
+        try:
+            store = self.get_object()
+            if store.user != request.user:
+                return Response(
+                    {"detail": "You do not have permission to delete this store."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            store.delete()
+            return Response(
+                {"detail": "Store deleted successfully"},
+                status=status.HTTP_200_OK
+            )
+        except Stores.DoesNotExist:
+            return Response(
+                {"detail": "Store not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer

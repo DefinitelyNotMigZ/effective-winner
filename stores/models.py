@@ -23,7 +23,7 @@ class Stores(models.Model):
     store_name = models.CharField(max_length=50, null=False, unique=True)
     main_product = models.CharField(max_length=50, null=False)
     floor_location = models.CharField(max_length=10, null=False)
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user = models.ForeignKey('Users', on_delete=models.CASCADE, related_name='stores')
 
 
 
