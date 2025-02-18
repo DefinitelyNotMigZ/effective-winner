@@ -9,19 +9,23 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+
 from pathlib import Path
 import os
+import environ
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+env = environ.Env()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r+9x1haj9ec$v=93seznonbqih_tgw+uj3dcroek2qn)jwk3im'
+SECRET_KEY = "django-insecure-r+9x1haj9ec$v=93seznonbqih_tgw+uj3dcroek2qn)jwk3im"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
-ENVIRONMENT = os.environ.get('ENVIRONMENT', 'DEV')
+DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
+ENVIRONMENT = os.environ.get("ENVIRONMENT", "DEV")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -29,15 +33,15 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 DJANGO_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS =[
+THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "allauth",
@@ -53,9 +57,7 @@ THIRD_PARTY_APPS =[
     "django_filters",
 ]
 
-LOCAL_APPS = [
-    "stores" 
-]
+LOCAL_APPS = ["stores"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -72,10 +74,10 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
-ROOT_URLCONF = 'storemanagement.urls'
+ROOT_URLCONF = "storemanagement.urls"
 
 TEMPLATES = [
-{
+    {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # Added templates
         "DIRS": [str(BASE_DIR / "templates"), str(BASE_DIR / "templates/email")],
@@ -96,17 +98,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'storemanagement.wsgi.application'
+WSGI_APPLICATION = "storemanagement.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": env.db(
+        "DATABASE_URL",
+        default="postgres:///storemanagement_db",
+    ),
 }
 
 
@@ -115,16 +117,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -144,9 +146,9 @@ AUTH_USER_MODEL = "stores.Users"
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -159,7 +161,7 @@ USE_TZ = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_ROOT = str(BASE_DIR / "staticfiles")
 STATIC_URL = "/staticfiles/"
@@ -169,15 +171,15 @@ STATICFILES_FINDERS = [
 ]
 MEDIA_ROOT = str(BASE_DIR / "media")
 MEDIA_URL = "/media/"
-#SECURITY
-#------------------------------------------------------------------------------
-#https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
+# SECURITY
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
 SESSION_COOKIE_HTTPONLY = True
-#https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
+# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = True
-#https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
+# https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
 X_FRAME_OPTIONS = "DENY"
-#http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+# http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 

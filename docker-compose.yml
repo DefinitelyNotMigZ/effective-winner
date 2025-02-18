@@ -1,0 +1,35 @@
+services:
+#containers na gagamitin sa docker
+  web: #unique identifier ng container
+    container_name: shoes_web #name ng container
+    build: 
+      context: ./app #kung san siya mag sisimula mag build
+      dockerfile: Dockerfile 
+    command: gunicorn storemanagement.wsgi:application --bind 0.0.0.0:8000 --timeout 30 --reload
+    ports:
+      - 8000:8000 #mapping ng host port: container port
+    env_file:
+      - ./app/.env
+    volumes: #persist or sync data files
+      - static_volume:/usr/src/app/staticfiles
+      - media_volume:/usr/src/app/mediafiles
+      - ./app/:/usr/src/app/
+    expose:
+      - 8000
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: shoe_db
+    image: postgres
+    env_file:
+      - ./app/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+
+volumes:
+  postgres_data: {} #container data will persist across containers
+  media_volume: {} #container media will persist across containers
+  static_volume: {} #container static files will persist across containers
