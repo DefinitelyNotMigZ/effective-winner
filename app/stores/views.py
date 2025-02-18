@@ -42,9 +42,28 @@ class StoresViewSet(viewsets.ModelViewSet):
         # return stores created by the current user
         return Stores.objects.filter(user=self.request.user)
 
-    def perform_create(self, serializer):
-        # set yung user na nag create ng store
-        serializer.save(user=self.request.user)
+    def create(self, request):
+        data = request.data
+        user = request.user  # get user obj stored in request via login
+
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
+
+        store_name = validated_data.get("store_name")
+
+        existing_store = Stores.objects.filter(store_name__iexact=store_name)
+
+        if existing_store:
+            return Response(
+                {"detail": "A store with the same name already exists."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        validated_data["user"] = user
+
+        created_store = Stores.objects.create(**validated_data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
