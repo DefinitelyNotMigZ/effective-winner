@@ -31,7 +31,7 @@ class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stores
         fields = '__all__'
-        read_only_fields = ('user',)  # Prevent user field from being modified directly
+        read_only_fields = ('user',) 
 
 
 

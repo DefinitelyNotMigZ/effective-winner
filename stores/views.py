@@ -43,16 +43,16 @@ class StoresViewSet(viewsets.ModelViewSet):
     serializer_class = StoreSerializer
 
     def get_queryset(self):
-        # Return only stores created by the current user
+        # return stores created by the current user
         return Stores.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # Automatically set the user when creating a store
+        # set yung user na nag create ng store
         serializer.save(user=self.request.user)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        # Check if the user is the owner of the store
+        # permission sa store
         if instance.user != request.user:
             return Response(
                 {"detail": "You do not have permission to update this store."},
@@ -62,7 +62,7 @@ class StoresViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        # Check if the user is the owner of the store
+        # check if owner
         if instance.user != request.user:
             return Response(
                 {"detail": "You do not have permission to update this store."},
@@ -72,7 +72,7 @@ class StoresViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        # Check if the user is the owner of the store
+        # delete ng store
         if instance.user != request.user:
             return Response(
                 {"detail": "You do not have permission to delete this store."},
