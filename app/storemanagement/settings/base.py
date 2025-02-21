@@ -19,12 +19,12 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env()
-
+print("DB URL:", env("DATABASE_URL"))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-r+9x1haj9ec$v=93seznonbqih_tgw+uj3dcroek2qn)jwk3im"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
+DEBUG = os.environ.get("DJANGO_DEBUG", "True")
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "DEV")
 
 ALLOWED_HOSTS = ["*"]
@@ -107,10 +107,11 @@ WSGI_APPLICATION = "storemanagement.wsgi.application"
 DATABASES = {
     "default": env.db(
         "DATABASE_URL",
-        default="postgres:///storemanagement_db",
+        default="postgres:///shoe_db",
     ),
 }
 
+print("DB:", DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

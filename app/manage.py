@@ -7,10 +7,12 @@ import sys
 def main():
     """Run administrative tasks."""
     environment = os.environ.get("ENVIRONMENT", "DEV")
-
+    print("MANAGE ENV:", environment)
     if environment == "PROD":
+        print("MANAGE PROD")
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "storemanagement.settings.prod")
     else:
+        print("MANAGE DEV")
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "storemanagement.settings.dev")
 
     try:

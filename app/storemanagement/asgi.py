@@ -12,10 +12,12 @@ import os
 from django.core.asgi import get_asgi_application
 
 environment = os.environ.get("ENVIRONMENT", "DEV")
-
+print("ASGI ENV:", environment)
 if environment == "PROD":
+    print("ASGI PROD")
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "storemanagement.settings.prod")
 else:
+    print("ASGI DEV")
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "storemanagement.settings.dev")
 
 application = get_asgi_application()
