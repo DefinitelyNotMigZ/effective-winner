@@ -194,3 +194,7 @@ SIMPLE_JWT = {
     "ALGORITHM": "HS256",
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Adjust this to your frontend's URL
+]

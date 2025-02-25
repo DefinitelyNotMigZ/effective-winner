@@ -9,6 +9,7 @@ from .serializers import (
     StoreSerializer,
     UserSerializer,
     CustomTokenObtainPairSerializer,
+    CustomLoginSerializer,
 )
 
 
@@ -97,4 +98,8 @@ class StoresViewSet(viewsets.ModelViewSet):
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+class CustomLoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
